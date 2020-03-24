@@ -20,19 +20,12 @@ def display(render):
 def signIn(request):
     return render(request,"signIn.html")
 def shoplist(request):
-    html="<html><head><title>home page</title></head><body> 
-        <table border ="5">
-            <tr>
-                <td rowspan="2">shopname</td>
-                <td>description</td>
-            </tr>            
-            <tr>
-                <td>Location</td>
-            </tr>            
-        </table>
-    </body>
-</html>
-"
+    '''html="<html><head><title>home page</title></head><body> 
+    for i in range(x):
+        html=html+"<table border ="5"><tr><td rowspan="2">shopname</td><td>description</td></tr>            <tr><td>Location</td></tr>            </table>"
+
+    html=html+"</body></html>"
+'''
     return render(request,"shoplist.html")
 def postsign(request):
     email=request.POST.get('email')
