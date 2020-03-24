@@ -19,7 +19,21 @@ def display(render):
     
 def signIn(request):
     return render(request,"signIn.html")
-
+def shoplist(request):
+    html="<html><head><title>home page</title></head><body> 
+        <table border ="5">
+            <tr>
+                <td rowspan="2">shopname</td>
+                <td>description</td>
+            </tr>            
+            <tr>
+                <td>Location</td>
+            </tr>            
+        </table>
+    </body>
+</html>
+"
+    return render(request,"shoplist.html")
 def postsign(request):
     email=request.POST.get('email')
     passw=request.POST.get("pass")
