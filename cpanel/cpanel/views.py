@@ -14,7 +14,7 @@ config={
 firebase=pyrebase.initialize_app(config)
 authe=firebase.auth()
 database=firebase.database()
-def display(render):
+def display(request):
     return render(request,"display.html")
     
 def signIn(request):
