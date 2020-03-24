@@ -2,14 +2,14 @@ from django.shortcuts import render
 from django.contrib import auth
 import pyrebase
 config={
-    'apiKey': "AIzaSyCLjLncnTczSOD7yJd-mgSZLPoLl8icUZw",
-    'authDomain': "cpanel-dee36.firebaseapp.com",
-    'databaseURL': "https://cpanel-dee36.firebaseio.com",
-    'projectId': "cpanel-dee36",
-    'storageBucket': "cpanel-dee36.appspot.com",
-    'messagingSenderId': "327800301185",
-    'appId': "1:327800301185:web:a88b58fd51d71552f80f80",
-    'measurementId': "G-S52R4GBPVW"
+    'apiKey': "AIzaSyDjKBhKFMQXgEsY1Mwu1iF5hciYoDWHXlw",
+    'authDomain': "covid-grocer.firebaseapp.com",
+    'databaseURL': "https://covid-grocer.firebaseio.com",
+    'projectId': "covid-grocer",
+    'storageBucket': "covid-grocer.appspot.com",
+    'messagingSenderId': "392378464185",
+    'appId': "1:392378464185:web:347bde56bd9bd3b49ae868",
+    'measurementId': "G-5Z5SR79KCH"
 }
 firebase=pyrebase.initialize_app(config)
 authe=firebase.auth()
