@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib import auth
+from django.http import HttpResponse
 import pyrebase
 config={
     'apiKey': "AIzaSyDjKBhKFMQXgEsY1Mwu1iF5hciYoDWHXlw",
@@ -15,18 +16,26 @@ firebase=pyrebase.initialize_app(config)
 authe=firebase.auth()
 database=firebase.database()
 def display(request):
+    
+    
     return render(request,"display.html")
     
 def signIn(request):
     return render(request,"signIn.html")
 def shoplist(request):
-    '''html="<html><head><title>home page</title></head><body> 
-    for i in range(x):
-        html=html+"<table border ="5"><tr><td rowspan="2">shopname</td><td>description</td></tr>            <tr><td>Location</td></tr>            </table>"
+    html="<html><head><title>home page</title></head><body>" 
+        
 
+    
+
+    loc=request.POST.get('loc')
+    datab=dict(dict(database.get().val())['users'])
+    for i in datab.keys():
+        if datab[i]['details']['location']==loc:
+            html=html+"<table border =\"5\"><tr><td rowspan=\"2\">"+datab[i]['details']["shopname"]+"</td><td>"+datab[i]['details']["description"]+"</td></tr>            <tr><td>"+datab[i]['details']["location"]+"</td></tr>            </table>"
     html=html+"</body></html>"
-'''
-    return render(request,"shoplist.html")
+    return HttpResponse(html)
+    #return render(request,"shoplist.html")
 def postsign(request):
     email=request.POST.get('email')
     passw=request.POST.get("pass")
