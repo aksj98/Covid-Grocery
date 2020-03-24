@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Display</title>
+    <style>
+        .centered {
+        position: fixed; /* or absolute */
+        top: 25%;
+        left: 40%;
+}
+    </style>
+</head>
+<body>
+<div class="centered" style="text-align: center;">
+        Customer
+         <input type="text" name="loc" placeholder="Enter location">
+         <input type="button" value="go" onclick="location.href='{% url 'shoplist' %}' ">  
+         <br><br>
+         <h3 >OR</h3>
+         <br><br>
+         <input type="button" value="Grocer" onclick="location.href='{% url 'signIn' %}' ">
+    
+</div>
+
+</body>
+</html>
