@@ -41,13 +41,16 @@ def postsignUp(request):
     name=request.POST.get('username')
     email=request.POST.get('email')
     password=request.POST.get('password')
+    shopname=request.POST.get('shopname')
+    location=request.POST.get('location')
+    description=request.POST.get('description')
     try:
         user=authe.create_user_with_email_and_password(email,password)
     except:
         message=("Please enter correct details.")
         return render(request,"signUp.html",{"message":message})
     uid=user['localId']
-    data={"name":name,"status":"1"}
+    data={"name":name,"shopname":shopname,"location":location,"description":description,"status":"1"}
     database.child("users").child(uid).child("details").set(data)
     return render(request,"signIn.html")
 def Prisoners(request):
