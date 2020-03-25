@@ -16,24 +16,33 @@ firebase=pyrebase.initialize_app(config)
 authe=firebase.auth()
 database=firebase.database()
 def display(request):
-    
-    
+
+
     return render(request,"display.html")
-    
+
 def signIn(request):
     return render(request,"signIn.html")
 def shoplist(request):
-    html="<html><head><title>home page</title></head><body>" 
-        
+    html="<html><head><title>home page</title></head><body>"
 
-    
+
+
 
     loc=request.POST.get('loc')
     datab=dict(dict(database.get().val())['users'])
+
+    no_shop_present = True
     for i in datab.keys():
         if datab[i]['details']['location']==loc:
+            no_shop_present = False
             html=html+"<table border =\"5\"><tr><td rowspan=\"2\">"+datab[i]['details']["shopname"]+"</td><td>"+datab[i]['details']["description"]+"</td></tr>            <tr><td>"+datab[i]['details']["location"]+"</td></tr>            </table>"
+
+
+    if no_shop_present:
+        html += "<h2>Sorry no shop is registerd for this location on this app</h2"
+        
     html=html+"</body></html>"
+
     return HttpResponse(html)
     #return render(request,"shoplist.html")
 def postsign(request):
