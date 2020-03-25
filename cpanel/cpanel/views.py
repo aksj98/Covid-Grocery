@@ -31,19 +31,51 @@ def shoplist(request):
             no_shop_present = False
             html=html+"<table border =\"5\"><tr><td rowspan=\"2\">"+datab[i]['details']["shopname"]+"</td><td>"+datab[i]['details']["description"]+"</td></tr>            <tr><td>"+datab[i]['details']["location"]+"</td></tr>            </table>"
 
-    
+
     if no_shop_present:
         html += "<h2>Sorry no shop is registerd for this location on this app</h2>"
     else:
         html+="<br><br><input type=\"button\" value=\"Place Order\" onclick=\"location.href='{% url 'orderdetails' %}'\">"
-    
+
     html=html+"</body></html>"
     fptr=open("./templates/shoplist.html","w")
     fptr.write(html)
     fptr.close()
     #return HttpResponse(html)
     return render(request,"shoplist.html")
-    
+
+def thankyou(request):
+    customer_name = request.POST.get('customername')
+    contact = request.POST.get('contact')
+    email = request.POST.get('email')
+    shop_name = request.POST.get('shopname')
+    shop_name = shop_name.replace(" ", "")
+    shop_name = shop_name.lower()
+    shopping_list = request.POST.get('shoppinglist')
+
+    datab=dict(dict(database.get().val())['users'])
+
+    shop_not_found = True
+    for key in datab.keys():
+        if datab[key]['details']['shopname'].lower() == shop_name:
+
+            shop_not_found = False
+            orderdetails = {"contact": contact, "email": email, "shoppinglist": shopping_list}
+            database.child("users").child(key).child("details").child("order_list").child(customer_name).set(orderdetails)
+
+    html="<html><head><title>home page</title></head><body>"
+    if shop_not_found:
+        html += "<h2>Sorry no such shop is there</h2>"
+    else:
+        html += "<h2>Thanks for shopping your parcel pick up time is: "
+    html=html+"</body></html>"
+
+    fptr=open("./templates/thankyou.html","w")
+    fptr.write(html)
+    fptr.close()
+
+    return render(request, "thankyou.html")
+
 def orderdetails(request):
     return render(request,"order_details.html")
 def postsign(request):
@@ -70,6 +102,8 @@ def postsignUp(request):
     email=request.POST.get('email')
     password=request.POST.get('password')
     shopname=request.POST.get('shopname')
+    shopname = shopname.replace(" ", "")
+    shopname = shopname.lower()
     location=request.POST.get('location')
     description=request.POST.get('description')
     try:

@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^postaddprisoner/',views.postaddprisoner,name="postadd"),
     url(r'^shoplist/',views.shoplist,name="shoplist"),
     url(r'^orderdetails/',views.orderdetails,name="orderdetails"),
+    url(r'^thankyou/',views.thankyou,name="thankyou"),
 ]
