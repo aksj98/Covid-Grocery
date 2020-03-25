@@ -34,9 +34,12 @@ def shoplist(request):
     html+="<a href="order_details.html">Click here to place order</a>
     if no_shop_present:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         html += "<h2>Sorry no shop is registerd for this location on this app</h2"
 
 =======
+=======
+>>>>>>> Stashed changes
         html += "<h2>Sorry no shop is registerd for this location on this app</h2>"
         
 >>>>>>> Stashed changes
