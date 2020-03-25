@@ -40,7 +40,7 @@ def shoplist(request):
 
     if no_shop_present:
         html += "<h2>Sorry no shop is registerd for this location on this app</h2"
-        
+
     html=html+"</body></html>"
 
     return HttpResponse(html)
@@ -77,7 +77,7 @@ def postsignUp(request):
         message=("Please enter correct details.")
         return render(request,"signUp.html",{"message":message})
     uid=user['localId']
-    data={"name":name,"shopname":shopname,"location":location,"description":description,"status":"1"}
+    data={"name":name,"shopname":shopname,"location":location,"description":description,"status":"1", "order_list": {"customer name": "grocery list"}}
     database.child("users").child(uid).child("details").set(data)
     return render(request,"signIn.html")
 def Prisoners(request):
