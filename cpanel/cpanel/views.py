@@ -31,21 +31,18 @@ def shoplist(request):
             no_shop_present = False
             html=html+"<table border =\"5\"><tr><td rowspan=\"2\">"+datab[i]['details']["shopname"]+"</td><td>"+datab[i]['details']["description"]+"</td></tr>            <tr><td>"+datab[i]['details']["location"]+"</td></tr>            </table>"
 
-    html+="<a href="order_details.html">Click here to place order</a>
+    
     if no_shop_present:
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        html += "<h2>Sorry no shop is registerd for this location on this app</h2"
-
-=======
-=======
->>>>>>> Stashed changes
         html += "<h2>Sorry no shop is registerd for this location on this app</h2>"
-        
->>>>>>> Stashed changes
+    else:
+        html+="<br><br><input type=\"button\" value=\"Place Order\" onclick=\"location.href='{% url 'orderdetails' %}'\">"
+    
     html=html+"</body></html>"
-
-    return HttpResponse(html)
+    fptr=open("./templates/shoplist.html","w")
+    fptr.write(html)
+    fptr.close()
+    #return HttpResponse(html)
+    return render(request,"shoplist.html")
     
 def orderdetails(request):
     return render(request,"order_details.html")
