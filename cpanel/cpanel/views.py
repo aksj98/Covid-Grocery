@@ -16,18 +16,12 @@ firebase=pyrebase.initialize_app(config)
 authe=firebase.auth()
 database=firebase.database()
 def display(request):
-
-
     return render(request,"display.html")
 
 def signIn(request):
     return render(request,"signIn.html")
 def shoplist(request):
     html="<html><head><title>home page</title></head><body>"
-
-
-
-
     loc=request.POST.get('loc')
     datab=dict(dict(database.get().val())['users'])
 
@@ -37,14 +31,21 @@ def shoplist(request):
             no_shop_present = False
             html=html+"<table border =\"5\"><tr><td rowspan=\"2\">"+datab[i]['details']["shopname"]+"</td><td>"+datab[i]['details']["description"]+"</td></tr>            <tr><td>"+datab[i]['details']["location"]+"</td></tr>            </table>"
 
-
+    html+="<a href="order_details.html">Click here to place order</a>
     if no_shop_present:
+<<<<<<< Updated upstream
         html += "<h2>Sorry no shop is registerd for this location on this app</h2"
 
+=======
+        html += "<h2>Sorry no shop is registerd for this location on this app</h2>"
+        
+>>>>>>> Stashed changes
     html=html+"</body></html>"
 
     return HttpResponse(html)
-    #return render(request,"shoplist.html")
+    
+def orderdetails(request):
+    return render(request,"order_details.html")
 def postsign(request):
     email=request.POST.get('email')
     passw=request.POST.get("pass")
