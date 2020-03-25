@@ -65,9 +65,9 @@ def thankyou(request):
 
     html="<html><head><title>home page</title></head><body>"
     if shop_not_found:
-        html += "<h2>Sorry no such shop is there</h2>"
+        html += "<h2>Sorry, Invalid shop name.</h2>"
     else:
-        html += "<h2>Thanks for shopping your parcel pick up time is: "
+        html += "<h2 style=\"text-align: center;\">Thank you for shopping with us. "
     html=html+"</body></html>"
 
     fptr=open("./templates/thankyou.html","w")
