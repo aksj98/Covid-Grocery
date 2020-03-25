@@ -165,16 +165,13 @@ def postaddprisoner(request):
     return render(request,"prisoners.html", {'e':name})
 
 def viewPrisoner(request):
-    idtoken = request.session['uid']
-    a = authe.get_account_info(idtoken)
-    a = a['users']
-    a = a[0]
-    a = a['localId']
-    timestamps=database.child("users").child(a).child('info').shallow().get().val()
-    lis_time=[]
+    from django.core.mail import send_mail
 
-    for i in timestamps:
-        lis_time.append(i)
+    send_mail(
+    'Your order is confirmed.',
+    'Your order is confirmed and will be ready in 30 minutes.',
+    'covidgrocer@gmail.com',
+    ['mahimap7@gmail.com'],
+    fail_silently=False)
 
-    lis_time.sort(reverse=True)
-    return render(request,"viewprisoner.html")
+    return render(request,"display.html")
