@@ -67,7 +67,8 @@ def thankyou(request):
     if shop_not_found:
         html += "<h2>Sorry, Invalid shop name.</h2>"
     else:
-        html += "<h2 style=\"text-align: center;\">Thank you for shopping with us. "
+        html += "<h2 style=\"text-align: center;\">Thank you for shopping with us. </h2><br><br>"
+        html += "<input type=\"button\" style=\"text-align: center;\" value=\"Continue Shopping\" onclick=\"location.href='{% url 'log' %}'\">"
     html=html+"</body></html>"
 
     fptr=open("./templates/thankyou.html","w")
@@ -219,7 +220,7 @@ def process_order(request):
 
 def logout(request):
     auth.logout(request)
-    return render(request, "signIn.html")
+    return render(request, "display.html")
 
 def signUp(request):
     return render(request, "signUp.html")
@@ -241,57 +242,6 @@ def postsignUp(request):
     data={"name":name,"shopname":shopname,"location":location,"description":description,"status":"1", "order_list": {}}
     database.child("users").child(uid).child("details").set(data)
     return render(request,"signIn.html")
-def Prisoners(request):
-    return render(request,"prisoners.html")
-
-def addPrisoner(request):
-    return render(request,"addprisoner.html")
-
-def postaddprisoner(request):
-
-    import time
-    from datetime import datetime,timezone
-    import pytz
-
-    tz=pytz.timezone('Asia/Kolkata')
-    time_now=datetime.now(timezone.utc).astimezone(tz)
-    millis=int(time.mktime(time_now.timetuple()))
-    prisonerName=request.POST.get('name')
-    prisonerID=request.POST.get('id')
-    cellNo=request.POST.get('cellno')
-    photo=request.POST.get('img1')
-    fingerprint=request.POST.get('img2')
-    state=request.POST.get('state')
-    pincode=request.POST.get('pincode')
-    crimedetails=request.POST.get('details')
-    arrival=request.POST.get('arrival')
-    duration=request.POST.get('duration')
-
-    idtoken=request.session['uid']
-    a=authe.get_account_info(idtoken)
-    a=a['users']
-    a=a[0]
-    a=a['localId']
-    print("info"+str(a))
-    data = {
-        "prisonerName": prisonerName,
-        "prisonerID": prisonerID,
-        "cellNo": cellNo,
-        "photo": photo,
-        "fingerprint": fingerprint,
-        "state": state,
-        "pincode": pincode,
-        "crimedetails": crimedetails,
-        "arrival": arrival,
-        "duration": duration
-    }
-    database.child('users').child(a).child('info').child(millis).set(data)
-    name=database.child('users').child(a).child('details').child('name').get().val()
-
-    return render(request,"prisoners.html", {'e':name})
-
-def viewPrisoner(request):
-    return render(request,"prisoner.html")
 
 def acceptmail(request,customer_email):
     from django.core.mail import send_mail
