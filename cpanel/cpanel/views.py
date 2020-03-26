@@ -162,11 +162,14 @@ def process_order(request):
         print("sending email to ", customer_email)
         #order rejection mail to above mail id
 
-    data=dict(dict(database.get().val())['users'][uid]['details']['order_list'])
-    print(data.pop(submit))
-    database.child("users").child(uid).child("details").child('order_list').set(data)
-
-    datab=dict(dict(database.get().val())['users'][uid]['details']['order_list'])
+    datab = {}
+    try:
+        data=dict(dict(database.get().val())['users'][uid]['details']['order_list'])
+        print(data.pop(submit))
+        database.child("users").child(uid).child("details").child('order_list').set(data)
+        datab=dict(dict(database.get().val())['users'][uid]['details']['order_list'])
+    except KeyError:
+        datab = {}
     for customer in datab.keys():
         name = customer + "from second page"
         orders = datab[customer]['shoppinglist']
