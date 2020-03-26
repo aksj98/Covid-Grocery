@@ -32,4 +32,6 @@ urlpatterns = [
     url(r'^shoplist/',views.shoplist,name="shoplist"),
     url(r'^orderdetails/',views.orderdetails,name="orderdetails"),
     url(r'^thankyou/',views.thankyou,name="thankyou"),
+    url(r'^acceptmail/',views.acceptmail,name="acceptmail"),
+    url(r'^rejectmail/',views.rejectmail,name="rejectmail")
 ]

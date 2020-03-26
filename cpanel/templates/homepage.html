@@ -1,19 +1,19 @@
-<html><head><title>home page</title></head><body><table style="width:100%" border="2"><tr><th>Customer Name</th><th>Items Ordered</th><th>Email-Id</th><th>Phone Number</th><th>Prompts</th></tr><tr><td>customer1</td><td>apples
+<html><head><title>home page</title></head><body><table style="width:100%" border="2"><tr><th>Customer Name</th><th>Items Ordered</th><th>Email-Id</th><th>Phone Number</th><th>Prompts</th></tr><tr><td>customer1</td><td>apples
 oranges</td><td>lsjfldsk@lsskfjdsl</td><td>464646</td>
                 <td>
                     <form action="/postsign/" method="POST">{% csrf_token %}
-	                   <input type="submit" value="Accept"></form>
+	                   <input type="button" value="Accept" onclick="location.href='{% url 'acceptmail' %}'"></form>
 	                      <form reject1="reject.html">
-	                   <input type="submit" value="Reject">
+	                   <input type="submit" value="Reject" onclick="location.href='{% url 'rejectmail' %}'">
                     </form>
                 </td>
-                <tr><td>customer2</td><td>potato
+                <tr><td>customer2</td><td>potato
 tomato</td><td>lsjfldsk@lsskfjdsl</td><td>67657</td>
                 <td>
                     <form action="/postsign/" method="POST">{% csrf_token %}
-	                   <input type="submit" value="Accept"></form>
+	                   <input type="button" value="Accept" onclick="location.href='{% url 'acceptmail' %}'"></form>
 	                      <form reject1="reject.html">
-	                   <input type="submit" value="Reject">
+	                   <input type="submit" value="Reject" onclick="location.href='{% url 'rejectmail' %}'">
                     </form>
                 </td>
                 </table><br><br><div class="container">

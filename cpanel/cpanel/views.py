@@ -109,9 +109,9 @@ def postsign(request):
         html += '''
                 <td>
                     <form action="/postsign/" method="POST">{% csrf_token %}
-	                   <input type="submit" value="Accept"></form>
+	                   <input type="button" value="Accept" onclick="location.href='{% url 'acceptmail' %}'"></form>
 	                      <form reject1="reject.html">
-	                   <input type="submit" value="Reject">
+	                   <input type="submit" value="Reject" onclick="location.href='{% url 'rejectmail' %}'">
                     </form>
                 </td>
                 '''
@@ -205,11 +205,26 @@ def postaddprisoner(request):
     return render(request,"prisoners.html", {'e':name})
 
 def viewPrisoner(request):
+    return render(request,"prisoner.html")
+
+def acceptmail(request):
     from django.core.mail import send_mail
 
     send_mail(
     'Your order is confirmed.',
     'Your order is confirmed and will be ready in 30 minutes.',
+    'covidgrocer@gmail.com',
+    ['mahimap7@gmail.com'],
+    fail_silently=False)
+
+    return render(request,"display.html")
+
+def rejectmail(request):
+    from django.core.mail import send_mail
+
+    send_mail(
+    'Your order is rejected.',
+    'Your order is rejecteddue to unavailabilty of items. Please try again.',
     'covidgrocer@gmail.com',
     ['mahimap7@gmail.com'],
     fail_silently=False)
