@@ -33,5 +33,6 @@ urlpatterns = [
     url(r'^orderdetails/',views.orderdetails,name="orderdetails"),
     url(r'^thankyou/',views.thankyou,name="thankyou"),
     url(r'^acceptmail/',views.acceptmail,name="acceptmail"),
-    url(r'^rejectmail/',views.rejectmail,name="rejectmail")
+    url(r'^rejectmail/',views.rejectmail,name="rejectmail"),
+    url(r'^process_order/',views.process_order,name="porcess_order"),
 ]

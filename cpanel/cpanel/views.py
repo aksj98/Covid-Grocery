@@ -89,7 +89,12 @@ def postsign(request):
 
     html="<html><head><title>home page</title></head><body>"
     html += '<table style="width:100%" border="2"><tr><th>Customer Name</th><th>Items Ordered</th><th>Email-Id</th><th>Phone Number</th><th>Prompts</th></tr>'
-    datab=dict(dict(database.get().val())['users'][user['localId']]['details']['order_list'])
+
+
+    try:
+        datab=dict(dict(database.get().val())['users'][user['localId']]['details']['order_list'])
+    except KeyError:
+        datab = {}
     print("\n******************")
     print(datab)
     print("********************")
@@ -106,12 +111,13 @@ def postsign(request):
         contact = datab[customer]['contact']
         accep_reject_form = "accept reject form"
         html += '<tr><td>'+name+'</td><td>'+orders+'</td><td>'+email+'</td><td>'+contact+'</td>'
+
         html += '''
                 <td>
-                    <form action="/postsign/" method="POST">{% csrf_token %}
-	                   <input type="button" value="Accept" onclick="location.href='{% url 'acceptmail' %}'"></form>
-	                      <form reject1="reject.html">
-	                   <input type="submit" value="Reject" onclick="location.href='{% url 'rejectmail' %}'">
+                    <form action="/process_order/" method="POST">{% csrf_token %}
+                       <input type="radio" name="accept" value="'''+user['localId']+'''">Accept
+                       <input type="radio" name="reject" value="'''+user['localId']+'''">Reject<br>
+                       <input type="submit" name="submit" value="'''+customer+'''">
                     </form>
                 </td>
                 '''
@@ -130,6 +136,69 @@ def postsign(request):
     fptr.close()
     return render(request, "homepage.html")
     # return render(request,"welcome.html",{"e":email})
+
+def process_order(request):
+    accept=request.POST.get('accept')
+    reject=request.POST.get("reject")
+    submit=request.POST.get('submit')
+
+    html="<html><head><title>home page</title></head><body>"
+    html += '<table style="width:100%" border="2"><tr><th>Customer Name</th><th>Items Ordered</th><th>Email-Id</th><th>Phone Number</th><th>Prompts</th></tr>'
+
+    uid = None
+    if accept != None:
+        uid = accept
+    else:
+        uid = reject
+
+
+    customer_email = dict(database.get().val())['users'][uid]['details']['order_list'][submit]['email']
+
+    if accept != None:
+        print("sending email to ", customer_email)
+        #send order conformation mail to above mail id
+
+    else:
+        print("sending email to ", customer_email)
+        #order rejection mail to above mail id
+
+    data=dict(dict(database.get().val())['users'][uid]['details']['order_list'])
+    print(data.pop(submit))
+    database.child("users").child(uid).child("details").child('order_list').set(data)
+
+    datab=dict(dict(database.get().val())['users'][uid]['details']['order_list'])
+    for customer in datab.keys():
+        name = customer + "from second page"
+        orders = datab[customer]['shoppinglist']
+        email = datab[customer]['email']
+        contact = datab[customer]['contact']
+        accep_reject_form = "accept reject form"
+        html += '<tr><td>'+name+'</td><td>'+orders+'</td><td>'+email+'</td><td>'+contact+'</td>'
+
+        html += '''
+                <td>
+                    <form action="/process_order/" method="POST">{% csrf_token %}
+                       <input type="radio" name="accept" value="'''+uid+'''">Accept
+                       <input type="radio" name="reject" value="'''+uid+'''">Reject<br>
+                       <input type="submit" name="submit" value="'''+customer+'''">
+                    </form>
+                </td>
+                '''
+
+    html += '</table><br><br>'
+    #adding logout button
+    html += '''<div class="container">
+                <button type="button" onclick="location.href='{% url 'log' %}'">
+                    Logout
+                </button>
+            </div>'''
+
+    html += '</body></html>'
+    fptr=open("./templates/homepage.html","w")
+    fptr.write(html)
+    fptr.close()
+    return render(request, "homepage.html")
+
 
 def logout(request):
     auth.logout(request)
@@ -152,7 +221,7 @@ def postsignUp(request):
         message=("Please enter correct details.")
         return render(request,"signUp.html",{"message":message})
     uid=user['localId']
-    data={"name":name,"shopname":shopname,"location":location,"description":description,"status":"1", "order_list": {"customer name": "grocery list"}}
+    data={"name":name,"shopname":shopname,"location":location,"description":description,"status":"1", "order_list": {}}
     database.child("users").child(uid).child("details").set(data)
     return render(request,"signIn.html")
 def Prisoners(request):
@@ -230,3 +299,8 @@ def rejectmail(request):
     fail_silently=False)
 
     return render(request,"display.html")
+
+
+
+# <input type="button" value="Accept" onclick="location.href='{% url 'acceptmail' %}'">
+# <input type="submit" value="Reject" onclick="location.href='{% url 'rejectmail' %}'">
