@@ -138,6 +138,7 @@ def postsign(request):
     # return render(request,"welcome.html",{"e":email})
 
 def process_order(request):
+    from django.core.mail import send_mail
     accept=request.POST.get('accept')
     reject=request.POST.get("reject")
     submit=request.POST.get('submit')
@@ -155,10 +156,23 @@ def process_order(request):
     customer_email = dict(database.get().val())['users'][uid]['details']['order_list'][submit]['email']
 
     if accept != None:
+        send_mail(
+        'Your order is confirmed.',
+        'Your order is confirmed and will be ready in 30 minutes.',
+        'covidgrocer@gmail.com',
+        [customer_email],
+        fail_silently=False)
+        
         print("sending email to ", customer_email)
         #send order conformation mail to above mail id
 
     else:
+        send_mail(
+        'Your order is rejected.',
+        'Your order is rejected due to unavailability of items. Please try again.',
+        'covidgrocer@gmail.com',
+        [customer_email],
+        fail_silently=False)
         print("sending email to ", customer_email)
         #order rejection mail to above mail id
 
@@ -279,14 +293,14 @@ def postaddprisoner(request):
 def viewPrisoner(request):
     return render(request,"prisoner.html")
 
-def acceptmail(request):
+def acceptmail(request,customer_email):
     from django.core.mail import send_mail
 
     send_mail(
     'Your order is confirmed.',
     'Your order is confirmed and will be ready in 30 minutes.',
     'covidgrocer@gmail.com',
-    ['mahimap7@gmail.com'],
+    [customer_email],
     fail_silently=False)
 
     return render(request,"display.html")
