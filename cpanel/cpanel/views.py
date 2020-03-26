@@ -86,10 +86,50 @@ def postsign(request):
     except:
         message="Invalid email or password"
         return render(request, "signIn.html",{"message":message})
-    print(user['idToken'])
+
+    html="<html><head><title>home page</title></head><body>"
+    html += '<table style="width:100%" border="2"><tr><th>Customer Name</th><th>Items Ordered</th><th>Email-Id</th><th>Phone Number</th><th>Prompts</th></tr>'
+    datab=dict(dict(database.get().val())['users'][user['localId']]['details']['order_list'])
+    print("\n******************")
+    print(datab)
+    print("********************")
+
+    # print(user['idToken'])
     session_id=user['idToken']
     request.session['uid']=str(session_id)
-    return render(request,"welcome.html",{"e":email})
+
+    #all the for loop goes here
+    for customer in datab.keys():
+        name = customer
+        orders = datab[customer]['shoppinglist']
+        email = datab[customer]['email']
+        contact = datab[customer]['contact']
+        accep_reject_form = "accept reject form"
+        html += '<tr><td>'+name+'</td><td>'+orders+'</td><td>'+email+'</td><td>'+contact+'</td>'
+        html += '''
+                <td>
+                    <form action="/postsign/" method="POST">{% csrf_token %}
+	                   <input type="submit" value="Accept"></form>
+	                      <form reject1="reject.html">
+	                   <input type="submit" value="Reject">
+                    </form>
+                </td>
+                '''
+
+    html += '</table><br><br>'
+    #adding logout button
+    html += '''<div class="container">
+                <button type="button" onclick="location.href='{% url 'log' %}'">
+                    Logout
+                </button>
+            </div>'''
+
+    html += '</body></html>'
+    fptr=open("./templates/homepage.html","w")
+    fptr.write(html)
+    fptr.close()
+    return render(request, "homepage.html")
+    # return render(request,"welcome.html",{"e":email})
 
 def logout(request):
     auth.logout(request)
